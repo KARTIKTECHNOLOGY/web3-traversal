@@ -36,6 +36,10 @@ def setup_files():
     with open(f"{SECRET_DIR}/notes.txt", "w") as f:
         f.write("Internal notes - keep confidential.\nAdmin password reset scheduled for Monday.\n")
 
+# IMPORTANT: setup_files() called at module level (not inside __main__)
+# so the files exist even when deployed via gunicorn/uwsgi on platforms like Render.
+setup_files()
+
 PAGE = """
 <!doctype html>
 <html>
@@ -131,7 +135,6 @@ def index():
     )
 
 if __name__ == "__main__":
-    setup_files()
     print("="*60)
     print("Challenge running on port 7003")
     print(f"Flag is at: {SECRET_DIR}/flag.txt")
